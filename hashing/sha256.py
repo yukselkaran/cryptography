@@ -37,3 +37,11 @@ def pad(message: bytes) -> bytes:
         padded += b"\x00"
     padded += msg_bit_length.to_bytes(8, "big")
     return padded
+    
+def rotr(x: int, n: int) -> int:
+    return ((x >> n) | (x << (32 - n))) & MASK32
+# example rotr(0x12345678, 8)
+# step 1  x >> n  shift right the last n bits fall off  0x00123456
+# step 2  x << (32 - n)  shift the same number left the fallen bits go to the far left  0x12345678000000
+# step 3  step1 | step2  join the two  0x12345678123456
+# step 4  step3 & MASK32  drop everything outside 32 bits  0x78123456
